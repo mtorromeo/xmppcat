@@ -9,7 +9,9 @@ description = "CLI application that works like cat but sends its output through 
 version = "0.1"
 url = "http://github.com/mtorromeo/xmppcat"
 
-import os, sys
+import os
+import sys
+
 
 def main():
     import setproctitle
@@ -22,7 +24,7 @@ def main():
 
     parser = argparse.ArgumentParser(prog=name, description=description)
 
-    parser.add_argument('-V', '--version', action='version', version="%(prog)s "+version)
+    parser.add_argument('-V', '--version', action='version', version="%(prog)s " + version)
     parser.add_argument('-c', '--config', help='Use a different configuration file')
     parser.add_argument('-H', '--host', help='XMPP host (%(prog)s will try to auto detect it with DNS or JID parsing)')
     parser.add_argument('-P', '--port', help='XMPP port', type=int, default=5222)
@@ -40,12 +42,12 @@ def main():
 
     args = parser.parse_args()
 
-    config = configparser.SafeConfigParser( defaults = dict(status_url = "http://127.0.0.1/server-status") )
+    config = configparser.SafeConfigParser(defaults=dict(status_url="http://127.0.0.1/server-status"))
     try:
         if args.config:
-            config.read( args.config )
+            config.read(args.config)
         else:
-            config.read( ["/etc/{}.conf".format(name), os.path.expanduser("~/.{}.conf".format(name))] )
+            config.read(["/etc/{}.conf".format(name), os.path.expanduser("~/.{}.conf".format(name))])
     except configparser.Error as e:
         sys.exit(e.message)
 
@@ -65,10 +67,10 @@ def main():
 
     server_options = list()
     if args.host:
-        server_options.append( (args.host, args.port) )
+        server_options.append((args.host, args.port))
 
     xmpp = SendMsgBot(user, pwd, recipient, message)
-    if xmpp.connect( *server_options ):
+    if xmpp.connect(*server_options):
         xmpp.process(block=True)
     else:
         sys.exit("Unable to connect.")
