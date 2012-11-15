@@ -6,7 +6,7 @@
 
 name = "xmppcat"
 description = "CLI application that works like cat but sends its output through xmpp"
-version = "0.1"
+version = "0.1.1"
 url = "http://github.com/mtorromeo/xmppcat"
 
 import os
