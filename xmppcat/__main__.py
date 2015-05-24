@@ -61,13 +61,15 @@ def main():
         message = sys.stdin.read()
     pwd = args.pwd if args.pwd else config.get('pass', '')
     user = args.user if args.user else config.get('user', '')
+    host = args.host if args.host else config.get('host', '')
+    port = args.port if args.port else config.get('port', '')
 
     # Logging
     logging.basicConfig(level=args.loglevel, format='%(levelname)-8s %(message)s')
 
     server_options = list()
-    if args.host:
-        server_options.append((args.host, args.port))
+    if host:
+        server_options.append((host, port))
 
     xmpp = SendMsgBot(user, pwd, recipient, message)
     if xmpp.connect(*server_options):
