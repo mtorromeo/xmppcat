@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-V', '--version', action='version', version="%(prog)s " + version)
     parser.add_argument('-c', '--config', help='Use a different configuration file')
     parser.add_argument('-H', '--host', help='XMPP host (%(prog)s will try to auto detect it with DNS or JID parsing)')
-    parser.add_argument('-P', '--port', help='XMPP port', type=int, default=5222)
+    parser.add_argument('-P', '--port', help='XMPP port', type=int)
     parser.add_argument('-u', '--user', help='XMPP username (JID)')
     parser.add_argument('-p', '--pass', dest='pwd', help='XMPP password')
     parser.add_argument('recipient', nargs=1, help='The XMPP jid to send the message to')
@@ -42,7 +42,7 @@ def main():
 
     args = parser.parse_args()
 
-    config = configparser.SafeConfigParser(defaults=dict(status_url="http://127.0.0.1/server-status"))
+    config = configparser.SafeConfigParser(defaults=dict(status_url="http://127.0.0.1/server-status", port=5222))
     try:
         if args.config:
             config.read(args.config)
