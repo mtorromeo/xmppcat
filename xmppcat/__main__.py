@@ -62,7 +62,7 @@ def main():
     pwd = args.pwd if args.pwd else config.get('pass', '')
     user = args.user if args.user else config.get('user', '')
     host = args.host if args.host else config.get('host', '')
-    port = args.port if args.port else config.get('port', '')
+    port = args.port if args.port else int(config.get('port', ''))
 
     # Logging
     logging.basicConfig(level=args.loglevel, format='%(levelname)-8s %(message)s')
