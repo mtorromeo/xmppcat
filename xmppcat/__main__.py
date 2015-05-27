@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-V', '--version', action='version', version="%(prog)s " + version)
     parser.add_argument('-c', '--config', help='Use a different configuration file')
     parser.add_argument('-H', '--host', help='XMPP host (%(prog)s will try to auto detect it with DNS or JID parsing)')
-    parser.add_argument('-P', '--port', help='XMPP port', type=int, default=5222)
+    parser.add_argument('-P', '--port', help='XMPP port', type=int)
     parser.add_argument('-u', '--user', help='XMPP username (JID)')
     parser.add_argument('-p', '--pass', dest='pwd', help='XMPP password')
     parser.add_argument('recipient', nargs=1, help='The XMPP jid to send the message to')
@@ -42,7 +42,7 @@ def main():
 
     args = parser.parse_args()
 
-    config = configparser.SafeConfigParser(defaults=dict(status_url="http://127.0.0.1/server-status"))
+    config = configparser.SafeConfigParser(defaults=dict(status_url="http://127.0.0.1/server-status", port=5222))
     try:
         if args.config:
             config.read(args.config)
@@ -61,13 +61,15 @@ def main():
         message = sys.stdin.read()
     pwd = args.pwd if args.pwd else config.get('pass', '')
     user = args.user if args.user else config.get('user', '')
+    host = args.host if args.host else config.get('host', '')
+    port = args.port if args.port else int(config.get('port', ''))
 
     # Logging
     logging.basicConfig(level=args.loglevel, format='%(levelname)-8s %(message)s')
 
     server_options = list()
-    if args.host:
-        server_options.append((args.host, args.port))
+    if host:
+        server_options.append((host, port))
 
     xmpp = SendMsgBot(user, pwd, recipient, message)
     if xmpp.connect(*server_options):
